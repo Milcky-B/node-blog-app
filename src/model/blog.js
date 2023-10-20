@@ -20,8 +20,14 @@ const blogSchema=new mongoose.Schema({
     ownerID:{
         type:mongoose.Schema.Types.ObjectId,
         required:true,
-        ref:"users"
+        ref:"User"
     }
+})
+
+blogSchema.virtual('cmts',{
+    ref:'Comments',
+    localField: '_id',
+    foreignField: 'blogID'
 })
 
 const blog=mongoose.model("Blogs",blogSchema)

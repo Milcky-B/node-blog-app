@@ -12,12 +12,12 @@ const commentSchema=new mongoose.Schema({
     commenterID:{
         type:mongoose.Schema.Types.ObjectId,
         required:true,
-        ref:"users"
+        ref:"User"
     },
     blogID:{
         type:mongoose.Schema.Types.ObjectId,
         required:true,
-        ref:"blogs"
+        ref:"Blogs"
     }
 })
 

@@ -25,4 +25,20 @@ router.get('/',midAuth,async(req,res)=>{
     }
 })
 
+router.get('/comments/:id',midAuth,async(req,res)=>{
+    try {
+        const blog=await Blogs.findById(req.params.id)
+        if(!blog) {
+            return res.status(400).send({error:"No post with that id"})
+        }
+        else{
+        await blog.populate('cmts')
+        res.send(blog.cmts)
+    }
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    }
+})
+
 module.exports=router

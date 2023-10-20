@@ -53,13 +53,19 @@ router.get('/',authMid,async (req,res)=>{
 })
 
 router.patch('/',authMid,async(req,res)=>{
+    const editables=["name","age","address","password"]
     const objectKey=Object.keys(req.body)
+    const filterObjKey=objectKey.filter((vals)=>{ 
+        if(editables.includes(vals)) return vals
+    })
     try {
-        objectKey.forEach((obj)=>{
-            console.log(obj)
+        filterObjKey.forEach((obj)=>{
+            req.user[obj]=req.body[obj]
         })
+        await req.user.save()
+        res.send(req.user)
     } catch (err) {
-        
+        res.status(500).send()
     }
 })
 
