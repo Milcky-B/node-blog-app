@@ -1,5 +1,5 @@
 const mongoose=require("mongoose")
-
+const Comments=require("../model/comment")
 const blogSchema=new mongoose.Schema({
     title:{
         type:String,
@@ -29,6 +29,13 @@ blogSchema.virtual('cmts',{
     localField: '_id',
     foreignField: 'blogID'
 })
+
+blogSchema.methods.deleteComments=async function(){
+    const comment= await Comments.find({blogID:this._id.toString()})
+    comment.forEach((com)=>{
+        com.deleteOne()
+    });
+}
 
 const blog=mongoose.model("Blogs",blogSchema)
 

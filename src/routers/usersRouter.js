@@ -69,4 +69,8 @@ router.patch('/',authMid,async(req,res)=>{
     }
 })
 
+router.delete('/',authMid,async(req,res)=>{
+    res.redirect(`/blogs/${req.user._id}`)
+})
+
 module.exports=router
