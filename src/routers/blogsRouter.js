@@ -36,8 +36,17 @@ router.get('/comments/:id',midAuth,async(req,res)=>{
         res.send(blog.cmts)
     }
     } catch (err) {
-        console.log(err)
-        res.status(500).send(err)
+        res.status(500).send()
+    }
+})
+
+router.delete('/:id',midAuth,async(req,res)=>{
+    try {
+        const blog=await Blogs.findById(req.params.id)
+        if(!blog) return res.status(400).send({error:"No post with that id"})
+        
+    } catch (err) {
+        
     }
 })
 

@@ -21,10 +21,22 @@ router.post("/:id",midAuth, async (req, res) => {
 router.get("/",midAuth,async (req, res) => {
   try {
     const comment = await Comments.find({commenterID:req.user.id});
+    if(comment.length===0) res.status(400).send({error:"You have no comments"})
     res.send(comment);
   } catch (err) {
     res.status(500).send();
   }
 });
+
+router.delete("/:id",midAuth,async(req,res)=>{
+  try {
+    const comment=await Comments.findOne({_id:req.params.id,commenterID:req.user.id})
+    if(!comment) res.status(400).send({error:"No comment found by that ID"})
+    await comment.deleteOne()
+    res.send(`${comment.comment} deleted`)
+  } catch (err) {
+    res.status(500).send()
+  }
+})
 
 module.exports = router;
