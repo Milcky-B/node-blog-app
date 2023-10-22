@@ -40,6 +40,21 @@ router.get('/comments/:id',midAuth,async(req,res)=>{
     }
 })
 
+router.get('/removeAll/:id',async(req,res)=>{
+    console.log(req.params.id)
+    try {
+        const blogs=await Blogs.find({ownerID:req.params.id})
+        if(blogs.length===0) return res.status(400).send({error:"No post with that id"})
+        blogs.forEach( (blg)=>{
+            blg.deleteComments();
+            blg.deleteOne();
+        })
+        res.send({message:"Success"})
+    } catch (err) {
+        res.status(500).send()
+    }
+})
+
 router.delete('/:id',midAuth,async(req,res)=>{
     try {
         const blog=await Blogs.findOne({_id:req.params.id,ownerID:req.user._id})

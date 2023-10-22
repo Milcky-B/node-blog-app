@@ -70,7 +70,12 @@ router.patch('/',authMid,async(req,res)=>{
 })
 
 router.delete('/',authMid,async(req,res)=>{
-    res.redirect(`/blogs/${req.user._id}`)
+    try {
+        const user= await Users.findByIdAndDelete(req.user._id)
+        res.redirect(`/blogs/removeAll/${req.user._id}`)
+    } catch (err) {
+        res.status(500).send()
+    }
 })
 
 module.exports=router
